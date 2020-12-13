@@ -1,7 +1,9 @@
-﻿namespace JwtAuthenticationServer.Utility
+﻿using JwtAuthenticationServer.Models;
+
+namespace JwtAuthenticationServer.Utility
 {
     public interface IJwtAuthenticationManager
     {
-        string GenerateJwtToken();
+        string GenerateJwtToken(UserModel user);
     }
 }
