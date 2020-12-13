@@ -20,7 +20,8 @@ namespace JwtAuthenticationServer.Extensions
         /// will allow only specified HTTP methods. Furthermore, we can make the same changes for the AllowAnyHeader() 
         /// method by using, for example, the WithHeaders("accept", "content-type") method to allow only specified headers.
         /// 
-        /// To know more, check : https://code-maze.com/net-core-web-development-part2/
+        /// To know more, 
+        /// link : https://code-maze.com/net-core-web-development-part2/
         /// </summary>
         /// <param name="services"></param>
         public static void ConfigureCors(this IServiceCollection services)
@@ -43,10 +44,11 @@ namespace JwtAuthenticationServer.Extensions
                 opt.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
             }).AddJwtBearer(x =>
             {
-                // There are lot more properties avaialble.
-                // To know actual usage of some of them,
-                // follow (very good article) : https://devblogs.microsoft.com/aspnet/jwt-validation-and-authorization-in-asp-net-core/ 
-                // and also : https://www.tpisoftware.com/tpu/articleDetails/1864
+                // There are many more properties avaialble.
+                // To know actual usage of some of them (in relation to what is used in this code),
+                // (very good article): https://devblogs.microsoft.com/aspnet/jwt-validation-and-authorization-in-asp-net-core/ 
+                // : https://code-maze.com/authentication-aspnetcore-jwt-1/
+                // : https://www.tpisoftware.com/tpu/articleDetails/1864
                 x.SaveToken = true;
                 x.RequireHttpsMetadata = false;
                 x.TokenValidationParameters = new TokenValidationParameters()
