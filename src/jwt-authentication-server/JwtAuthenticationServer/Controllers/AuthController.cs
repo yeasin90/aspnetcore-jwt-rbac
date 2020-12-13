@@ -1,6 +1,7 @@
 ﻿using JwtAuthenticationServer.Models;
 using JwtAuthenticationServer.Utility;
 using Microsoft.AspNetCore.Mvc;
+using System.Linq;
 
 namespace JwtAuthenticationServer.Controllers
 {
@@ -15,15 +16,17 @@ namespace JwtAuthenticationServer.Controllers
         }
 
         [HttpPost, Route("login")]
-        public IActionResult Login([FromBody]LoginModel user)
+        public IActionResult Login([FromBody] LoginModel user)
         {
             if (user == null)
                 return BadRequest("Invalid client request");
 
-            // dummy username and password
-            if(user.Username == "1234" && user.Password == "1234")
+            var requestedUser = DummyUserGenerator.GetDummyUsers()
+                .FirstOrDefault(x => x.Username == user.Username && x.Password == user.Password);
+
+            if (requestedUser != null)
             {
-                var jwtToken = _jwtAuthManager.GenerateJwtToken();
+                var jwtToken = _jwtAuthManager.GenerateJwtToken(requestedUser);
                 return Ok(jwtToken);
             }
 
