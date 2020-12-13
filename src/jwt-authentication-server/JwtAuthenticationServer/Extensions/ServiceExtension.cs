@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using System;
 using System.Text;
 
 namespace JwtAuthenticationServer.Extensions
@@ -60,6 +61,11 @@ namespace JwtAuthenticationServer.Extensions
                     ValidIssuer = configuration["JWT:ValidIssuer"],
                     ValidAudience = configuration["JWT:ValidAudience"],
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(configuration["JWT:Secret"])),
+                    // ClockSkew = expiration time of a token. Default is 5-minutes.
+                    // If you set 'new SecurityTokenDescriptor().Expires = 1min', then total token expiration time will be 6-minutes
+                    // Set ClockSkew = TimeSpan.Zero to ensure only 'new SecurityTokenDescriptor().Expires = 1min' is used
+                    // link : https://stackoverflow.com/questions/43045035/jwt-token-authentication-expired-tokens-still-working-net-core-web-api
+                    ClockSkew = TimeSpan.Zero
                 };
             });
         }
