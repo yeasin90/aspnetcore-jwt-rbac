@@ -2,6 +2,7 @@ using JwtAuthenticationServer.Extensions;
 using JwtAuthenticationServer.Utility;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -20,14 +21,19 @@ namespace JwtAuthenticationServer
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // Added for using IHttpContextAccessor from controller
             services.AddHttpContextAccessor();
 
+            // Added for CORS configuration
             services.ConfigureCors();
 
+            // Added for JWT configuration
             services.ConfigureJwt(Configuration);
 
+            // Default from ASP.NET Core 5
             services.AddControllers();
 
+            // DI registration
             services.AddSingleton<IJwtAuthenticationManager, JwtAuthenticationManager>();
         }
 
@@ -43,6 +49,11 @@ namespace JwtAuthenticationServer
 
             app.UseRouting();
 
+            // For enabling services.ConfigureCors(); from ConfigurationService.
+            // This must be between app.UseRouting(); and app.UseEndpoints
+            app.UseCors();
+
+            // For enabling services.ConfigureJwt(Configuration); from ConfigurationService.
             app.UseAuthentication();
 
             app.UseAuthorization();
@@ -50,6 +61,10 @@ namespace JwtAuthenticationServer
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapGet("/", async context =>
+                {
+                    await context.Response.WriteAsync("Server is up and running!");
+                });
             });
         }
     }
