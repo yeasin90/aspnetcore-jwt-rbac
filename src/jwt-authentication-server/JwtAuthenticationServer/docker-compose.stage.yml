@@ -1,0 +1,13 @@
+version: '3.4'
+
+services:
+  authserver-stage:
+    container_name: authserver-stage
+    image: authserver-stage:stage
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Stage
+    build:
+      context: ..
+      dockerfile: ./JwtAuthenticationServer/Dockerfile
+    ports:
+      - '5002:80'
