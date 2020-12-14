@@ -1,5 +1,7 @@
+using JwtAuthenticationServer.Authorizations;
 using JwtAuthenticationServer.Extensions;
 using JwtAuthenticationServer.Utility;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -30,11 +32,19 @@ namespace JwtAuthenticationServer
             // Added for JWT configuration
             services.ConfigureJwt(Configuration);
 
+            services.AddAuthorization(options =>
+            {
+                // Custom authorization policy
+                // https://devblogs.microsoft.com/aspnet/jwt-validation-and-authorization-in-asp-net-core/
+                options.AddPolicy(KeyConstants.CustomAuthorizationPolicyName, policy => policy.Requirements.Add(new MaximumOfficeNumberRequirement(10)));
+            });
+
             // Default from ASP.NET Core 5
             services.AddControllers();
 
             // DI registration
             services.AddSingleton<IJwtAuthenticationManager, JwtAuthenticationManager>();
+            services.AddSingleton<IAuthorizationHandler, MaximumOfficeNumberAuthorizationHandler>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

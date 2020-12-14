@@ -1,5 +1,6 @@
 ﻿using JwtAuthenticationServer.Attributes;
-using JwtAuthenticationServer.Models;
+using JwtAuthenticationServer.Authorizations;
+using JwtAuthenticationServer.Utility;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -40,6 +41,13 @@ namespace JwtAuthenticationServer.Controllers
         public IActionResult GetAddress()
         {
             return Ok("Accesible by Everyone, no jwt token required.");
+        }
+
+        [HttpGet, Route("warehouse")]
+        [Authorize(Policy = KeyConstants.CustomAuthorizationPolicyName)]
+        public IActionResult GetWarehouse()
+        {
+            return Ok("Policy based access. Only sales can see.");
         }
     }
 }

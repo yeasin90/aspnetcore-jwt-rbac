@@ -1,4 +1,4 @@
-﻿namespace JwtAuthenticationServer.Models
+﻿namespace JwtAuthenticationServer.Authorizations
 {
     public static class UserRoles
     {
