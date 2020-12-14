@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
@@ -13,23 +14,18 @@ namespace JwtAuthenticationServer.Extensions
     public static class ServiceExtension
     {
         /// <summary>
-        /// We are using the basic settings for adding CORS policy because for this project allowing any origin, method, 
-        /// and header is quite enough. But we can be more restrictive with those settings if we want. 
-        /// Instead of the AllowAnyOrigin() method which allows requests from any source, we could use 
-        /// the WithOrigins("http://www.something.com") which will allow requests just from the specified source. 
-        /// Also, instead of AllowAnyMethod() that allows all HTTP methods, we can use WithMethods("POST", "GET") that 
-        /// will allow only specified HTTP methods. Furthermore, we can make the same changes for the AllowAnyHeader() 
-        /// method by using, for example, the WithHeaders("accept", "content-type") method to allow only specified headers.
-        /// 
-        /// To know more, 
-        /// link : https://code-maze.com/net-core-web-development-part2/
+        /// To know more on CORS for ASP.NET Core, 
+        /// : https://docs.microsoft.com/en-us/aspnet/core/security/cors?view=aspnetcore-5.0
+        /// : https://code-maze.com/net-core-web-development-part2/
         /// </summary>
         /// <param name="services"></param>
         public static void ConfigureCors(this IServiceCollection services)
         {
             services.AddCors(options =>
             {
-                options.AddPolicy("CorsPolicy",
+                // Use 'AddPolicy' to add named CORS policty
+                // https://docs.microsoft.com/en-us/aspnet/core/security/cors?view=aspnetcore-5.0
+                options.AddDefaultPolicy(
                     builder => builder.AllowAnyOrigin()
                     .AllowAnyMethod()
                     .AllowAnyHeader());
