@@ -11,8 +11,7 @@ Implement RBAC using Jwt token and ASP.NET Core Web API for learning.
 #### How to test : 
 ##### Running the Web API from Docker : 
 - Clone the repo. 
-- From command executor (CMD, PowerShell), navigate to path
-*<your-drive>:\\\\<clone-directory>\\<src>\\<jwt-authentication-server>\\<JwtAuthenticationServer>*
+- Open command editor (CMD, PowerShell) from clone directory and navigate to _:src\\\\jwt-authentication-server\\\\JwtAuthenticationServer_
 - Run below docker command : 
 ```sh
 docker-compose -f docker-compose.<env>.yml up
