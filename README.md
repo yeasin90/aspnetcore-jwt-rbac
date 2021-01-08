@@ -42,4 +42,5 @@ Since your role is Manager, you will receive data.
 5. Repeat Step#3. There will be an _401 = Un-authorized_ for http://localhost:5000/api/inventory/salaries 
 
 #### Reference : 
+- [Anatomy of JWT token](https://scotch.io/tutorials/the-anatomy-of-a-json-web-token)
 - [Validate Jwt token](https://jwt.io/)
