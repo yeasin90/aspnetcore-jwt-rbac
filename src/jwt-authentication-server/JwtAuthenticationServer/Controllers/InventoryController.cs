@@ -49,5 +49,11 @@ namespace JwtAuthenticationServer.Controllers
         {
             return Ok("Policy based access. Only sales can see.");
         }
+
+        [Authorize(Policy = ClaimTypes.DateOfBirth)]
+        public IActionResult SecretPolicy()
+        {
+            return Ok($"Request had {ClaimTypes.DateOfBirth}. Response OK");
+        }
     }
 }

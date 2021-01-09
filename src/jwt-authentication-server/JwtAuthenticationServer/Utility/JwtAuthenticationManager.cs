@@ -38,7 +38,8 @@ namespace JwtAuthenticationServer.Utility
                 new Claim(JwtRegisteredClaimNames.NameId, user.Username),
                 new Claim(ClaimTypes.Role, user.Role.ToString()),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                new Claim("Anything1", "Custom value")
+                new Claim("Anything1", "Custom value"),
+                new Claim(ClaimTypes.DateOfBirth, "TempDoB")
             });
 
             // 2. create token description
