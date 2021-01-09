@@ -1,5 +1,7 @@
 using JwtAuthenticationServer.Authorizations;
+using JwtAuthenticationServer.Authorizations.Policies;
 using JwtAuthenticationServer.Extensions;
+using JwtAuthenticationServer.Policies.Authorizations;
 using JwtAuthenticationServer.Utility;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
@@ -8,6 +10,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System.Security.Claims;
 
 namespace JwtAuthenticationServer
 {
@@ -36,7 +39,14 @@ namespace JwtAuthenticationServer
             {
                 // Custom authorization policy
                 // https://devblogs.microsoft.com/aspnet/jwt-validation-and-authorization-in-asp-net-core/
-                options.AddPolicy(KeyConstants.CustomAuthorizationPolicyName, policy => policy.Requirements.Add(new MaximumOfficeNumberRequirement(10)));
+                options.AddPolicy(KeyConstants.CustomAuthorizationPolicyName, policy => policy.Requirements.Add(new OfficeNumberRequirement(10)));
+
+                // Another custom authorzation policy added in authorization middleware 
+                // https://www.youtube.com/watch?v=RBMO_hruKaI&list=PLOeFnOV9YBa7dnrjpOG6lMpcyd7Wn7E8V&index=4
+                options.AddPolicy(ClaimTypes.DateOfBirth, policy =>
+                {
+                    policy.RequireCustomClaim(ClaimTypes.DateOfBirth);
+                });
             });
 
             // Default from ASP.NET Core 5
@@ -44,7 +54,8 @@ namespace JwtAuthenticationServer
 
             // DI registration
             services.AddSingleton<IJwtAuthenticationManager, JwtAuthenticationManager>();
-            services.AddSingleton<IAuthorizationHandler, MaximumOfficeNumberAuthorizationHandler>();
+            services.AddSingleton<IAuthorizationHandler, OfficeNumberPolicyHandler>();
+            services.AddSingleton<IAuthorizationHandler, CustomRequireClaimHandler>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

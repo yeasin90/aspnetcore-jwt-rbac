@@ -1,14 +1,15 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using JwtAuthenticationServer.Authorizations;
+using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-namespace JwtAuthenticationServer.Authorizations
+namespace JwtAuthenticationServer.Policies.Authorizations
 {
     // Custom authorization policy : https://devblogs.microsoft.com/aspnet/jwt-validation-and-authorization-in-asp-net-core/
     // A handler that can determine whether a MaximumOfficeNumberRequirement is satisfied
-    internal class MaximumOfficeNumberAuthorizationHandler : AuthorizationHandler<MaximumOfficeNumberRequirement>
+    internal class OfficeNumberPolicyHandler : AuthorizationHandler<OfficeNumberRequirement>
     {
-        protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, MaximumOfficeNumberRequirement requirement)
+        protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, OfficeNumberRequirement requirement)
         {
             // Bail out if the office number claim isn't present
             if (!context.User.HasClaim(c => c.Type == ClaimTypes.Role && c.Value == UserRoles.Sales))
@@ -22,9 +23,9 @@ namespace JwtAuthenticationServer.Authorizations
     }
 
     // A custom authorization requirement which requires office number to be below a certain value
-    internal class MaximumOfficeNumberRequirement : IAuthorizationRequirement
+    internal class OfficeNumberRequirement : IAuthorizationRequirement
     {
-        public MaximumOfficeNumberRequirement(int officeNumber)
+        public OfficeNumberRequirement(int officeNumber)
         {
             MaximumOfficeNumber = officeNumber;
         }
